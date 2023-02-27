@@ -1,6 +1,8 @@
 # Project Title
-
-MongoDB Instance on Docker
+Docker container for MYSQL and MongoDb instance.
+## Links
+Mongodb: https://hub.docker.com/r/himanshusahani20/mongo-db/tags \
+MYSQL:  https://hub.docker.com/r/himanshusahani20/my-mysql-image/tags 
 
 ## Group Members
 
@@ -10,18 +12,16 @@ MongoDB Instance on Docker
 
 ## Description
 
-This project involves creating a MongoDB instance on Docker, creating a database with sample data, and performing some basic operations on the data. The project was completed by following these steps:
-
 1. Install Docker from [https://www.docker.com/products/docker-desktop/](https://www.docker.com/products/docker-desktop/)
 2. Pull the MongoDB image using the command `docker pull mongo`
 3. Create a MongoDB container using the command `docker run --name <container-name> -d mongo:latest`
 4. Start the container using the command `docker exec -it <container-name> bash`
 5. Create a database in the MongoDB container and insert three records using the following commands:
-
+```
 db..insert({name : "Purshottam Kumar", position : "Manager"})
 db..insert({name : "Prince Sharma", position : "sde"})
-db._.insert({name : "Himanshu Kumar", position : "Manager"}) 
-
+db._.insert({name : "Himanshu Kumar", position : "Manager"})
+```
 6. Update the position of one record from "Manager" to "sde" using the following command:
 
 db.empl.updateOne({name: "kartik"}, [{$set: {position: "sde"}}])
@@ -44,4 +44,29 @@ db.empl.remove({Name: "himanshu"})
 
 ## DockerHub Repository Link
 
-[https://hub.docker.com/r/himanshusahani20/mongo-db/tags](https://hub.docker.com/r/himanshusahani20/mongo-db/tags)
+[https://hub.docker.com/r/himanshusahani20/mongo-db/tags](https://hub.docker.com/r/himanshusahani20/mongo-db/tags)  
+## Steps
+1. Create a Dockerfile to define the MySQL image. In a text editor, create a new file named `Dockerfile` (without an extension) with the following contents. 
+### Dockerfile
+```
+FROM mysql:latest
+ENV MYSQL_ROOT_PASSWORD mypassword
+COPY init.sql /docker-entrypoint-initdb.d/ 
+```
+2. Created the initialization script. In the same directory as the Dockerfile, created a new file named init.sql with the following contents:
+CREATE DATABASE example;
+```
+CREATE DATABASE bdadatabase;
+USE bdadatabase;
+CREATE TABLE group (id INT, name VARCHAR(255), email VARCHAR(255));
+INSERT INTO group VALUES (1, 'Prince Sharma', 'princeurfrajaji@gmail.com');
+INSERT INTO group VALUES (2, 'Himanshu Kumar', 'kyahibolu@gmail.com');
+INSERT INTO group VALUES (3, 'Purshottam Kumar', 'handsomeboy@gmail.com');
+```
+3. Build the Docker image. Open a terminal or command prompt, navigate to the directory containing the Dockerfile and init.sql files, and run the following command: \
+    `docker build -t my-mysql-image .`
+4. Run the Docker container. Once the image has been built, you can run it using the following command: \
+    `docker run -d -p 3306:3306 --name my-mysql-container my-mysql-image`
+5. Finally, pushed the image to Docker Hub: 
+   docker push himanshusahani20/my-mysql-image 
+6.Get the DockerHub link on our profile at https://hub.docker.com/r/himanshusahani20/my-mysql-image/tags
